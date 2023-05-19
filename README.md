@@ -19,13 +19,16 @@ to strictly set version numbers for the code, but I didn't do that exactly, so g
 Read the notes and watch the video if you'd like to follow along.
 
 ############ Dependencies ################
+
 1) node must be installed.
 2) From demo_project/app run `npm install` 
    before you build the docker image.
+
 ##########################################
 
 
-###################### Test app ##########################################
+########## Test app ##########
+
 from demo_project dir, run:
 	a) docker build -t my-app:1.0 .
 	b) docker-compose -f mongo.yaml up
@@ -35,4 +38,5 @@ In browser on your local machine open tabs for the following addresses:
 		- This is the NodeJS application
 	b) localhost:8080
 		- This is mongo-express
-########################################################################## 
+
+################################# 
