@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>User Profile</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1 id="header">User Profile</h1>
+      <img src="profile-picture" alt="Profile Picture" />
+      <p></p> 
+      <label>Name: </label><h3 id="name"></h3>
+      <p>Email: <span id="email"></span></p>
+      <label>Interests: </label><h3 id="interests"></h3>
+      <button class="button" onclick="editProfile()">Edit Profile</button>
+    </div>
+    <div class="container-edit">
+      <h1>Edit User Profile</h1>
+      <hr />
+      <img src="profile-picture" alt="Profile Picture" />
+      <p></p> 
+      <label for="input-name">Name:</label>
+      <input id="input-name" type="text" />
+      <br />
+      <label for="input-email">Email:</label>
+      <input id="input-email" type="email" />
+      <br />
+      <label for="input-interests">Interests:</label>
+      <input id="input-interests" type="text" />
+      <br />
+      <button class="button" onclick="saveProfile()">Save Profile</button>
+    </div>
+
+    <script>
+      window.onload = function () {
+        document.querySelector('.container-edit').style.display = 'none';
+        getProfile();
+      };
+
+      function getProfile() {
+        fetch('/get-profile')
+          .then((response) => response.json())
+          .then((data) => {
+            document.querySelector('#name').textContent = data.name;
+            document.querySelector('#email').textContent = data.email;
+            document.querySelector('#interests').textContent = data.interests;
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+      }
+
+      function editProfile() {
+        document.querySelector('.container').style.display = 'none';
+        document.querySelector('.container-edit').style.display = 'block';
+
+        const name = document.querySelector('#name').textContent;
+        document.querySelector('#input-name').value = name;
+
+        const email = document.querySelector('#email').textContent;
+        document.querySelector('#input-email').value = email;
+        
+	const interests = document.querySelector('#interests').textContent;
+        document.querySelector('#input-interests').value = email;
+      }
+
+      function saveProfile() {
+        const updatedProfile = {
+          name: document.querySelector('#input-name').value,
+          email: document.querySelector('#input-email').value,
+	  interests: document.querySelector('#input-interests').value,
+        };
+
+        fetch('/update-profile', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedProfile),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // Handle the response if needed
+            console.log('Profile updated:', data);
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+
+        document.querySelector('#name').textContent = updatedProfile.name;
+        document.querySelector('#email').textContent = updatedProfile.email;
+	document.querySelector('#interests').textContent = updatedProfile.interests;
+
+        document.querySelector('.container').style.display = 'block';
+        document.querySelector('.container-edit').style.display = 'none';
+      }
+    </script>
+  </body>
+</html>
+
