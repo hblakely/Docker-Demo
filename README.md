@@ -2,6 +2,7 @@ Author: Hunter J. Blakely
 
 Date: Fri, May 19, 2023
 
+----------------------------------------------------------------
 
 Following along with the below tutorial, taking notes, and recreating demo-project.
 
