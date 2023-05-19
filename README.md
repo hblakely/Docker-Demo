@@ -8,17 +8,20 @@ Following along with the below tutorial, taking notes, and recreating demo-proje
 
 Docker Tutorial: https://www.youtube.com/watch?v=3c-iBn73dDE&t=852s
 
+Read the notes and watch the video if you'd like to follow along.
 
-CONTENTS OF THIS REPO:
+----------------------------------------------------------------
 
-docker_notes.txt has my notes for the video, with code-examples. 
+#CONTENTS OF THIS REPO:
+
+`docker_notes.txt` 
+Contains video-notes + code-examples. 
 There may be misstyping, so double check the code and commands.
 
-demo_project/ holds my recreation of Anna Smith's demo Docker/NodeJS project.
-If you have errors when building, there may be version conflicts. It is possible
-to strictly set version numbers for the code, but I didn't do that exactly, so good luck ;)
 
-Read the notes and watch the video if you'd like to follow along.
+`demo_project/` 
+Stores my recreation of Anna Smith's demo Docker/NodeJS project.
+If you have errors when building, there may be version conflicts. 
 
 ----------------------------------------------------------------
 
@@ -33,7 +36,7 @@ Read the notes and watch the video if you'd like to follow along.
 
 #Test App
 
-from demo_project dir, run:
+From demo_project dir, run:
 
 	a) docker build -t my-app:1.0 .
 
