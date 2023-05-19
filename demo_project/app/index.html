@@ -8,9 +8,9 @@
       <h1 id="header">User Profile</h1>
       <img src="profile-picture" alt="Profile Picture" />
       <p></p> 
-      <label>Name: </label><h3 id="name"></h3>
-      <p>Email: <span id="email"></span></p>
-      <label>Interests: </label><h3 id="interests"></h3>
+      <label for="name">Name: </label><h3 id="name"></h3>
+      <label for="email">Email: </label><h3 id="email"></h3>
+      <label for="interests">Interests: </label><h3 id="interests"></h3>
       <button class="button" onclick="editProfile()">Edit Profile</button>
     </div>
     <div class="container-edit">
@@ -18,15 +18,9 @@
       <hr />
       <img src="profile-picture" alt="Profile Picture" />
       <p></p> 
-      <label for="input-name">Name:</label>
-      <input id="input-name" type="text" />
-      <br />
-      <label for="input-email">Email:</label>
-      <input id="input-email" type="email" />
-      <br />
-      <label for="input-interests">Interests:</label>
-      <input id="input-interests" type="text" />
-      <br />
+      <label for="input-name">Name:</label><input id="input-name" type="text" /><br />
+      <label for="input-email">Email:</label><input id="input-email" type="email" /><br />
+      <label for="input-interests">Interests:</label><input id="input-interests" type="text" /><br />
       <button class="button" onclick="saveProfile()">Save Profile</button>
     </div>
 

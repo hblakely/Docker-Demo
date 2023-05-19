@@ -5,64 +5,74 @@ var fs = require('fs');
 var bodyParser = require('body-parser');
 var app = express();
 
-app.use(bodyParser.urlencoded({
-        extended: true
-}));
-
-app.use(bodyParser.json());
+app.use(express.json()); // Required to parse JSON request bodies
 
 app.get('/', function (req, res) {
         res.sendFile(path.join(__dirname, "index.html"));
 });
 
-app.get('/get-profile', function (req, res) {
-  MongoClient.connect('mongodb://admin:password@mongodb', function (err, client) {
-    if (err) throw err;
-    
-    console.log('Successfully connected to mongodb client.');
-
-    var db = client.db('user-account');
-    var query = { userid: 1 };
-    db.collection('users').findOne(query, function (err, result) {
-      if (err) throw err;
-      client.close();
-      // Instead of sending the entire 'result' object, we'll send a subset of properties.
-      var profile = {
-        name: result.name,
-        email: result.email,
-        interests: result.interests
-      };
-
-      res.send(profile);
+// Connecting to MongoDB only worked after making async.
+app.get('/get-profile', async (req, res) => {
+  try {
+    const client = await MongoClient.connect('mongodb://admin:password@mongodb', {
+      useUnifiedTopology: true
     });
-  });
+
+    console.log('Successfully connected to MongoDB.');
+
+    const db = client.db('user-account');
+    const query = { userid: 1 };
+
+    const result = await db.collection('users').findOne(query);
+
+    const profile = {
+      name: result.name,
+      email: result.email,
+      interests: result.interests
+    };
+
+    client.close();
+
+    res.send(profile);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).send('An error occurred.');
+  }
 });
 
-app.post('/update-profile', function (req, res) {
-  var userObj = req.body;
-  var response = res;
+// Connecting to MongoDB only worked after making async.
+app.post('/update-profile', async (req, res) => {
+  const userObj = req.body;
 
-  console.log('connecting to the db...');
+  console.log('Connecting to the database...');
 
-   MongoClient.connect('mongodb://admin:password@mongodb', function (err, client) {
-    if (err) throw err;
-
-    var db = client.db('user-account');
-    userObj['userid'] = 1;
-    var query = { userid: 1 };
-    var newValues = { $set: userObj };
-
-    console.log('successfully connected to the user-account db');
-
-    db.collection('users').updateOne(query, newValues, { upsert: true }, function (err, res) {
-      if (err) throw err;
-      console.log('successfully updated or inserted');
-      client.close();
-      response.send(userObj);
+  try {
+    const client = await MongoClient.connect('mongodb://admin:password@mongodb', {
+      useUnifiedTopology: true
     });
-  });
-});
 
+    const db = client.db('user-account');
+    const query = { userid: 1 };
+    const newValues = { $set: userObj };
+
+    console.log('Successfully connected to the user-account database.');
+
+    db.collection('users').updateOne(query, newValues, { upsert: true }, (err, result) => {
+      if (err) {
+        console.error('Error updating or inserting the document:', err);
+        client.close();
+        return res.status(500).send('An error occurred while updating or inserting the document.');
+      }
+
+      console.log('Successfully updated or inserted the document.');
+      client.close();
+      res.send(userObj);
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).send('An error occurred.');
+  }
+});
 
 app.get('/profile-picture', function (req, res){
         var img = fs.readFileSync(path.resolve(__dirname,'./images/profile-1.jpeg'));
